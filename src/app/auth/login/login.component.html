@@ -1,0 +1,46 @@
+<div>
+  <h2>{{ isSignup ? 'Sign Up' : 'Login' }}</h2>
+
+  <form (ngSubmit)="loginOrSignup()">
+    <label>
+      Username:
+      <input type="text" [(ngModel)]="email" name="email" required />
+    </label>
+
+    <label>
+      Password:
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </label>
+
+    <div *ngIf="isSignup">
+      <label>
+        Full Name:
+        <input type="text" [(ngModel)]="fullName" name="fullName" />
+      </label>
+
+      <label>
+        Phone:
+        <input type="text" [(ngModel)]="phone" name="phone" />
+      </label>
+    </div>
+
+    <label class="remember-me">
+      <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+      Remember Me
+    </label>
+
+    <button type="submit">{{ isSignup ? 'Sign Up' : 'Login' }}</button>
+  </form>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <p>
+    <a (click)="toggleMode()" href="#">
+      {{
+        isSignup
+          ? 'Already have an account? Log in'
+          : "Don't have an account? Sign up"
+      }}
+    </a>
+  </p>
+</div>
