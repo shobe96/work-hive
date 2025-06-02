@@ -1,35 +1,38 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '../supabase.client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   async signIn(email: string, password: string) {
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .single();
+    /*Ana TODO: 
+   koristi method signIn iz supabase servisa
+ */
+    console.log(email, password);
+    // const { data: user, error } = await supabase
+    //   .from('users')
+    //   .select('*')
+    //   .eq('email', email)
+    //   .single();
 
-    if (error || !user) {
-      throw new Error('User not found');
-    }
+    // if (error || !user) {
+    //   throw new Error('User not found');
+    // }
 
-    if (user.password !== password) {
-      throw new Error('Invalid username or password');
-    }
+    // if (user.password !== password) {
+    //   throw new Error('Invalid username or password');
+    // }
 
-    // Return user info or your own session/token here
-    return {
-      message: 'Login successful',
-      user: {
-        id: user.id,
-        email: user.email,
-        full_name: user.full_name,
-        phone: user.phone,
-      },
-    };
+    // // Return user info or your own session/token here
+    // return {
+    //   message: 'Login successful',
+    //   user: {
+    //     id: user.id,
+    //     email: user.email,
+    //     full_name: user.full_name,
+    //     phone: user.phone,
+    //   },
+    // };
   }
 
   async signUp(
@@ -38,22 +41,20 @@ export class AuthService {
     fullName: string,
     phone: string
   ) {
-    const { data, error } = await supabase.from('users').insert([
-      {
-        email,
-        password, // plaintext, but be aware of security concerns
-        full_name: fullName,
-        phone,
-        is_active: true,
-      },
-    ]);
-
-    if (error) throw error;
-
-    return {
-      message: 'User registered',
-      user: data?.[0],
-    };
+    // const { data, error } = await supabase.from('users').insert([
+    //   {
+    //     email,
+    //     password, // plaintext, but be aware of security concerns
+    //     full_name: fullName,
+    //     phone,
+    //     is_active: true,
+    //   },
+    // ]);
+    // if (error) throw error;
+    // return {
+    //   message: 'User registered',
+    //   user: data?.[0],
+    // };
   }
 
   async signOut() {

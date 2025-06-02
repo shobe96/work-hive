@@ -1,8 +1,3 @@
-// src/app/shared/supabase.client.ts
-import { createClient } from '@supabase/supabase-js';
-
-const SUPABASE_URL = 'https://djocxqppriiiwlmvwhuf.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqb2N4cXBwcmlpaXdsbXZ3aHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MzQ5MDUsImV4cCI6MjA2MzMxMDkwNX0.SvYh0Hi0CwDVdoROZwAZzr6YIrAWLG7e-iuxpqPW6Dw';
-
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+export const SUPABASE_URL = 'https://djocxqppriiiwlmvwhuf.supabase.co';
+export const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqb2N4cXBwcmlpaXdsbXZ3aHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MzQ5MDUsImV4cCI6MjA2MzMxMDkwNX0.SvYh0Hi0CwDVdoROZwAZzr6YIrAWLG7e-iuxpqPW6Dw';

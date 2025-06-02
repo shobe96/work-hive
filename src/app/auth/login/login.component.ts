@@ -20,11 +20,18 @@ export class LoginComponent {
   errorMessage = '';
   isSignup = false;
 
+  /*Ana TODO: 
+  koristi inject metodu za inject-ovanje dependency-ja umesto konstruktora
+ */
   constructor(private authService: AuthService, private router: Router) {
     this.checkRememberedUser();
   }
 
   async loginOrSignup() {
+    /*Ana TODO: 
+   napraviti posebnu formu za signup/registraciju
+   pozivas authService.signIn()
+ */
     try {
       if (this.isSignup) {
         const result = await this.authService.signUp(
@@ -34,15 +41,12 @@ export class LoginComponent {
           this.phone
         );
         console.log('Signup successful', result);
-        if (this.rememberMe) this.rememberUser(result.user);
+        // if (this.rememberMe) this.rememberUser(result.user);
         this.router.navigate(['/home']);
       } else {
-        const result = await this.authService.signIn(
-          this.email,
-          this.password
-        );
+        const result = await this.authService.signIn(this.email, this.password);
         console.log('Login successful', result);
-        if (this.rememberMe) this.rememberUser(result.user);
+        // if (this.rememberMe) this.rememberUser(result.user);
         this.router.navigate(['/home']);
       }
     } catch (error: any) {
