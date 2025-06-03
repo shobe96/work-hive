@@ -9,9 +9,11 @@
 
   <section class="employee-list" *ngIf="!loading && !error">
     <div class="employee-card" *ngFor="let employee of employees">
-      <h3>{{ employee.user.full_name }}</h3>
+      <h3>{{ employee.employee_code }}</h3>
+      <p>{{ employee.date_of_joining }}</p>
       <p>{{ employee.designation }}</p>
-      <p>{{ employee.user.email }}</p>
+      <p>{{ employee.employment_type }}</p>
+      <p>{{ employee.salary }}</p>
     </div>
   </section>
 </div>

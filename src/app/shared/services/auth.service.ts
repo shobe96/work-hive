@@ -1,38 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { SupabaseService } from '../data-access/supabase.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+
+  private supabaseService = inject(SupabaseService);
+  
   async signIn(email: string, password: string) {
-    /*Ana TODO: 
-   koristi method signIn iz supabase servisa
- */
-    console.log(email, password);
-    // const { data: user, error } = await supabase
-    //   .from('users')
-    //   .select('*')
-    //   .eq('email', email)
-    //   .single();
-
-    // if (error || !user) {
-    //   throw new Error('User not found');
-    // }
-
-    // if (user.password !== password) {
-    //   throw new Error('Invalid username or password');
-    // }
-
-    // // Return user info or your own session/token here
-    // return {
-    //   message: 'Login successful',
-    //   user: {
-    //     id: user.id,
-    //     email: user.email,
-    //     full_name: user.full_name,
-    //     phone: user.phone,
-    //   },
-    // };
+    return await this.supabaseService.signIn(email, password);
   }
 
   async signUp(
@@ -41,29 +18,24 @@ export class AuthService {
     fullName: string,
     phone: string
   ) {
-    // const { data, error } = await supabase.from('users').insert([
-    //   {
-    //     email,
-    //     password, // plaintext, but be aware of security concerns
-    //     full_name: fullName,
-    //     phone,
-    //     is_active: true,
-    //   },
-    // ]);
-    // if (error) throw error;
-    // return {
-    //   message: 'User registered',
-    //   user: data?.[0],
-    // };
+    return await this.supabaseService.signUpNewUser(email, password);
   }
 
   async signOut() {
-    // Implement this only if you're using sessions or tokens
-    return { message: 'Signed out' };
+    return await this.supabaseService.signOut();
   }
 
-  getSession() {
-    // Stub for session/token retrieval
-    return null;
+  async getSession() {
+    return await this.supabaseService.getSession();
+  }
+
+  async isAuthenticated(): Promise<boolean> {
+    const session = await this.getSession();
+    return !!session?.user;
+  }
+
+  async getCurrentUser() {
+    const session = await this.getSession();
+    return session?.user || null;
   }
 }

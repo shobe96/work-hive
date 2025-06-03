@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
+import { SupabaseService } from 'src/app/shared/data-access/supabase.service';
 
 @Component({
   selector: 'app-login',
@@ -23,35 +24,52 @@ export class LoginComponent {
   /*Ana TODO: 
   koristi inject metodu za inject-ovanje dependency-ja umesto konstruktora
  */
-  constructor(private authService: AuthService, private router: Router) {
+  private authService = inject(AuthService);
+  private supabaseService = inject(SupabaseService);
+  private router = inject(Router);
+
+  constructor() {
     this.checkRememberedUser();
   }
 
-  async loginOrSignup() {
-    /*Ana TODO: 
+  /*Ana TODO: 
    napraviti posebnu formu za signup/registraciju
    pozivas authService.signIn()
  */
-    try {
-      if (this.isSignup) {
-        const result = await this.authService.signUp(
-          this.email,
-          this.password,
-          this.fullName,
-          this.phone
-        );
-        console.log('Signup successful', result);
-        // if (this.rememberMe) this.rememberUser(result.user);
-        this.router.navigate(['/home']);
+  async loginOrSignup() {
+    if (this.isSignup) {
+      // ✅ Call the signUp method from AuthService
+      const result: any = await this.authService.signUp(
+        this.email,
+        this.password,
+        this.fullName,
+        this.phone
+      );
+
+      if (result.error) {
+        this.errorMessage = result.error.message || 'Signup failed';
       } else {
-        const result = await this.authService.signIn(this.email, this.password);
-        console.log('Login successful', result);
-        // if (this.rememberMe) this.rememberUser(result.user);
+        this.errorMessage = '';
+        // Optionally log the user in after signup
+        await this.authService.signIn(this.email, this.password);
         this.router.navigate(['/home']);
       }
-    } catch (error: any) {
-      this.errorMessage =
-        error.message || (this.isSignup ? 'Signup failed' : 'Login failed');
+    } else {
+      // Login flow
+      const result: any = await this.authService.signIn(
+        this.email,
+        this.password
+      );
+
+      if (result.error) {
+        this.errorMessage = result.error.message || 'Login failed';
+      } else {
+        this.errorMessage = '';
+        if (this.rememberMe && result.user) {
+          this.rememberUser(result.user);
+        }
+        this.router.navigate(['/home']);
+      }
     }
   }
 
@@ -64,12 +82,16 @@ export class LoginComponent {
     localStorage.setItem('rememberedUser', JSON.stringify(user));
   }
 
-  checkRememberedUser() {
+  async checkRememberedUser() {
     const savedUser = localStorage.getItem('rememberedUser');
     if (savedUser) {
-      console.log('Auto-logging in from remember me');
-      // You could navigate directly or load session here
-      this.router.navigate(['/home']);
+      const session = await this.authService.getSession();
+      if (session && session.user) {
+        console.log('Restoring session for remembered user');
+        this.router.navigate(['/home']);
+      } else {
+        localStorage.removeItem('rememberedUser'); // session expired
+      }
     }
   }
 }
