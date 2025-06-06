@@ -1,18 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { SupabaseService } from '../shared/data-access/supabase.service';
+import { SupabaseService } from '../../shared/data-access/supabase.service';
+import { Employee } from 'src/app/employees/employee.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  employees: any[] = [];
+  employees: Employee[] = [];
   loading = true;
   error: string | null = null;
 
@@ -37,10 +38,12 @@ export class HomeComponent implements OnInit {
     try {
       this.employees = await this.supabaseService.getAll('employees');
       console.log('employees', this.employees);
-    } catch (err: any) {
-      this.error = err.message || 'Failed to load employees';
-    } finally {
-      this.loading = false;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        this.error = err.message;
+      } else {
+        this.error = 'Failed to load employees';
+      }
     }
   }
 

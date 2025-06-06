@@ -1,7 +1,7 @@
 <div>
   <h2>{{ isSignup ? 'Sign Up' : 'Login' }}</h2>
 
-  <form (ngSubmit)="loginOrSignup()">
+  <form (ngSubmit)="login()">
     <label>
       Username:
       <input type="text" [(ngModel)]="email" name="email" required />

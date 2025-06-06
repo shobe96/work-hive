@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
-import { SupabaseService } from 'src/app/shared/data-access/supabase.service';
+import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   email = '';
@@ -25,7 +25,6 @@ export class LoginComponent {
   koristi inject metodu za inject-ovanje dependency-ja umesto konstruktora
  */
   private authService = inject(AuthService);
-  private supabaseService = inject(SupabaseService);
   private router = inject(Router);
 
   constructor() {
@@ -36,41 +35,42 @@ export class LoginComponent {
    napraviti posebnu formu za signup/registraciju
    pozivas authService.signIn()
  */
-  async loginOrSignup() {
-    if (this.isSignup) {
-      // ✅ Call the signUp method from AuthService
-      const result: any = await this.authService.signUp(
-        this.email,
-        this.password,
-        this.fullName,
-        this.phone
-      );
+  async login() {
+    // ✅ Call the signUp method from AuthService
+    const result = await this.authService.signIn(
+      this.email,
+      this.password
+      // this.fullName,
+      // this.phone
+    );
 
-      if (result.error) {
-        this.errorMessage = result.error.message || 'Signup failed';
-      } else {
-        this.errorMessage = '';
-        // Optionally log the user in after signup
-        await this.authService.signIn(this.email, this.password);
-        this.router.navigate(['/home']);
-      }
+    console.log('User is: ', result);
+
+    if (result.error) {
+      this.errorMessage = result.error.message || 'Signup failed';
     } else {
-      // Login flow
-      const result: any = await this.authService.signIn(
-        this.email,
-        this.password
-      );
-
-      if (result.error) {
-        this.errorMessage = result.error.message || 'Login failed';
-      } else {
-        this.errorMessage = '';
-        if (this.rememberMe && result.user) {
-          this.rememberUser(result.user);
-        }
-        this.router.navigate(['/home']);
-      }
+      this.errorMessage = '';
+      // Optionally log the user in after signup
+      this.router.navigate(['/employees']);
     }
+
+    // else {
+    //   // Login flow
+    //   const result: any = await this.authService.signIn(
+    //     this.email,
+    //     this.password
+    //   );
+    //   console.log('User is: ', result);
+    //   if (result.error) {
+    //     this.errorMessage = result.error.message || 'Login failed';
+    //   } else {
+    //     this.errorMessage = '';
+    //     if (this.rememberMe && result.user) {
+    //       this.rememberUser(result.user);
+    //     }
+    //     this.router.navigate(['/employees']);
+    //   }
+    // }
   }
 
   toggleMode() {
@@ -78,7 +78,7 @@ export class LoginComponent {
     this.errorMessage = '';
   }
 
-  rememberUser(user: any) {
+  rememberUser(user: User) {
     localStorage.setItem('rememberedUser', JSON.stringify(user));
   }
 
@@ -88,7 +88,7 @@ export class LoginComponent {
       const session = await this.authService.getSession();
       if (session && session.user) {
         console.log('Restoring session for remembered user');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/employees']);
       } else {
         localStorage.removeItem('rememberedUser'); // session expired
       }

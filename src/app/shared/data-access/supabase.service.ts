@@ -8,11 +8,13 @@ import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase.client';
 export class SupabaseService {
   private supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   private readonly schemaName = 'work_hive';
+
   /*Ana TODO: 
     'work_hive' schema da postane globalna promenjiva
     napravi from() argument da bude dinamicki
   */
-  async getAll(table: string): Promise<any[]> {
+  // Get all records from a table
+  async getAll<T>(table: string): Promise<T[]> {
     const { data, error } = await this.supabase
       .schema(this.schemaName)
       .from(table)
@@ -27,22 +29,67 @@ export class SupabaseService {
     }
   }
 
+  // Create a new record
+  async create<T>(table: string, itemData: T): Promise<T[] | null> {
+    const { data, error } = await this.supabase
+      .schema(this.schemaName)
+      .from(table)
+      .insert([itemData])
+      .select();
+
+    if (error) {
+      console.error('Error creating record:', error.message);
+      return null;
+    }
+    return data as T[];
+  }
+
+  // Update an existing record by ID
+  async update<T>(
+    table: string,
+    id: string,
+    updateData: Partial<T>
+  ): Promise<T[] | null> {
+    const { data, error } = await this.supabase
+      .schema(this.schemaName)
+      .from(table)
+      .update(updateData)
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      console.error('Error updating record:', error.message);
+      return null;
+    }
+    return data as T[];
+  }
+
+  // Delete a record by ID
+  async delete<T>(table: string, employeeId: string): Promise<T[] | null> {
+    const { data, error } = await this.supabase
+      .schema(this.schemaName)
+      .from(table)
+      .delete()
+      .eq('id', employeeId)
+      .select();
+
+    if (error) {
+      console.error('Error deleting record:', error.message);
+      return null;
+    }
+    return data as T[];
+  }
+
   /*Ana TODO: 
     email i password da se proslede iz forme
   */
   async signIn(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signInWithPassword({
+    const result = await this.supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      console.log('error', error);
-      return error;
-    } else {
-      console.log('data', data.user);
-      return data;
-    }
+    return result;
   }
 
   async signOut() {
@@ -55,25 +102,18 @@ export class SupabaseService {
     link koji se pritsne vodi na localhost:4200,
     proveri da li potvda mail adrese moze da se preskoci
   */
-  async signUpNewUser(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signUp({
+  async signUp(email: string, password: string) {
+    const response = await this.supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          email_verified: true, // this becomes user_metadata.email_verified
-        },
-      },
+      // options: {
+      //   data: {
+      //     email_verified: true, // this becomes user_metadata.email_verified
+      //   },
+      // },
     });
-    if (error) {
-      console.log('error', error);
-      return error;
-    } else {
-      console.log('data', data.user);
-      // Call signIn with same credentials
-      await this.signIn(email, password);
-      return data;
-    }
+
+    return response;
   }
 
   async getSession() {

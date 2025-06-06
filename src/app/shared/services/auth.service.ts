@@ -5,20 +5,14 @@ import { SupabaseService } from '../data-access/supabase.service';
   providedIn: 'root',
 })
 export class AuthService {
-
   private supabaseService = inject(SupabaseService);
-  
+
   async signIn(email: string, password: string) {
     return await this.supabaseService.signIn(email, password);
   }
 
-  async signUp(
-    email: string,
-    password: string,
-    fullName: string,
-    phone: string
-  ) {
-    return await this.supabaseService.signUpNewUser(email, password);
+  async signUp(email: string, password: string) {
+    return await this.supabaseService.signUp(email, password);
   }
 
   async signOut() {
