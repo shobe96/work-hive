@@ -1,0 +1,335 @@
+<mat-horizontal-stepper
+  [linear]="true"
+  #stepper
+  (selectionChange)="onStepChange($event)"
+>
+  <!-- Step 1: Basic Info -->
+  <mat-step [stepControl]="step1Form">
+    <form [formGroup]="step1Form">
+      <ng-template matStepLabel>Basic Info</ng-template>
+
+      <section class="emphasized-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name <span class="required">*</span></mat-label>
+          <input matInput placeholder="Name" formControlName="name" />
+          <mat-error *ngIf="step1Form.get('name')?.hasError('required')">
+            Required
+          </mat-error>
+          <mat-error *ngIf="step1Form.get('name')?.hasError('minlength')">
+            Minimum 3 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Surname <span class="required">*</span></mat-label>
+          <input matInput placeholder="Surname" formControlName="surname" />
+          <mat-error *ngIf="step1Form.get('surname')?.hasError('required')">
+            Required
+          </mat-error>
+          <mat-error *ngIf="step1Form.get('surname')?.hasError('minlength')">
+            Minimum 3 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Date of Birth <span class="required">*</span></mat-label>
+          <input matInput type="date" formControlName="dob" />
+          <mat-error *ngIf="step1Form.get('dob')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email <span class="required">*</span></mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <mat-error *ngIf="step1Form.get('email')?.hasError('required')">
+            Required
+          </mat-error>
+          <mat-error *ngIf="step1Form.get('email')?.hasError('email')">
+            Invalid email format
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone <span class="required">*</span></mat-label>
+          <input matInput placeholder="Phone" formControlName="phone" />
+          <mat-error *ngIf="step1Form.get('phone')?.hasError('required')">
+            Required
+          </mat-error>
+          <mat-error *ngIf="step1Form.get('phone')?.hasError('minlength')">
+            Minimum 8 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Emergency Phone <span class="required">*</span></mat-label>
+          <input
+            matInput
+            placeholder="Emergency Phone"
+            formControlName="emergencyPhone"
+          />
+          <mat-error
+            *ngIf="step1Form.get('emergencyPhone')?.hasError('required')"
+          >
+            Required
+          </mat-error>
+          <mat-error
+            *ngIf="step1Form.get('emergencyPhone')?.hasError('minlength')"
+          >
+            Minimum 8 characters
+          </mat-error>
+        </mat-form-field>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 2: Address -->
+  <mat-step [stepControl]="step2Form">
+    <form [formGroup]="step2Form">
+      <ng-template matStepLabel>Address</ng-template>
+
+      <section class="emphasized-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Address <span class="required">*</span></mat-label>
+          <input matInput placeholder="Address" formControlName="address" />
+          <mat-error *ngIf="step2Form.get('address')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>City <span class="required">*</span></mat-label>
+          <input matInput placeholder="City" formControlName="city" />
+          <mat-error *ngIf="step2Form.get('city')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Country <span class="required">*</span></mat-label>
+          <input matInput placeholder="Country" formControlName="country" />
+          <mat-error *ngIf="step2Form.get('country')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 3: Personal Info -->
+  <mat-step [stepControl]="step3Form">
+    <form [formGroup]="step3Form">
+      <ng-template matStepLabel>Personal Data</ng-template>
+
+      <section class="emphasized-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>T-shirt Size <span class="required">*</span></mat-label>
+          <mat-select formControlName="tshirt">
+            <mat-option *ngFor="let size of tshirtSizes" [value]="size">{{
+              size
+            }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="step3Form.get('tshirt')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Allergies</mat-label>
+          <input matInput placeholder="Allergies" formControlName="allergies" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Blood Type <span class="required">*</span></mat-label>
+          <mat-select formControlName="bloodType">
+            <mat-option *ngFor="let blood of bloodTypes" [value]="blood">{{
+              blood
+            }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="step3Form.get('bloodType')?.hasError('required')">
+            Required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Hobbies</mat-label>
+          <input matInput placeholder="Hobbies" formControlName="hobbies" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>LinkedIn</mat-label>
+          <input
+            matInput
+            placeholder="LinkedIn URL"
+            formControlName="linkedin"
+          />
+          <mat-error *ngIf="step3Form.get('linkedin')?.hasError('pattern')">
+            Invalid URL
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>GitHub</mat-label>
+          <input matInput placeholder="GitHub URL" formControlName="github" />
+          <mat-error *ngIf="step3Form.get('github')?.hasError('pattern')">
+            Invalid URL
+          </mat-error>
+        </mat-form-field>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 4: Tech Stack -->
+  <mat-step [stepControl]="step4Form">
+    <form [formGroup]="step4Form">
+      <ng-template matStepLabel>Tech Stack</ng-template>
+
+      <section class="emphasized-section">
+        <mat-label>Role <span class="required">*</span></mat-label>
+        <mat-radio-group
+          formControlName="role"
+          (change)="onRoleChange($event.value)"
+        >
+          <mat-radio-button value="Frontend">Frontend</mat-radio-button>
+          <mat-radio-button value="Backend">Backend</mat-radio-button>
+          <mat-radio-button value="Fullstack">Fullstack</mat-radio-button>
+        </mat-radio-group>
+        <mat-error *ngIf="step4Form.get('role')?.hasError('required')">
+          Required
+        </mat-error>
+
+        <!-- Frontend -->
+        <div
+          *ngIf="
+            ['Frontend', 'Fullstack'].includes(step4Form.get('role')?.value)
+          "
+          [formGroupName]="'frontend'"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Frontend Languages</mat-label>
+            <mat-select formControlName="languages" multiple>
+              <mat-option
+                *ngFor="let lang of ['JavaScript', 'TypeScript']"
+                [value]="lang"
+              >
+                {{ lang }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Frontend Frameworks</mat-label>
+            <mat-select formControlName="frameworks" multiple>
+              <ng-container
+                *ngFor="let lang of step4Form.get('frontend.languages')?.value"
+              >
+                <mat-option
+                  *ngFor="let fw of getFrameworksFor(lang)"
+                  [value]="fw"
+                >
+                  {{ fw }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Backend -->
+        <!-- Backend -->
+        <div
+          *ngIf="
+            ['Backend', 'Fullstack'].includes(step4Form.get('role')?.value)
+          "
+          [formGroupName]="'backend'"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Backend Languages</mat-label>
+            <mat-select formControlName="languages" multiple>
+              <mat-option *ngFor="let lang of backendLanguages" [value]="lang">
+                {{ lang }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Backend Frameworks</mat-label>
+            <mat-select formControlName="frameworks" multiple>
+              <ng-container
+                *ngFor="let lang of step4Form.get('backend.languages')?.value"
+              >
+                <mat-option
+                  *ngFor="let fw of getFrameworksFor(lang)"
+                  [value]="fw"
+                >
+                  {{ fw }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 5: Summary -->
+  <mat-step>
+    <ng-template matStepLabel>Summary</ng-template>
+    <div class="summary-table-container">
+      <table
+        mat-table
+        [dataSource]="summaryData"
+        class="mat-elevation-z8 full-width"
+      >
+        <!-- Label Column -->
+        <ng-container matColumnDef="label">
+          <th mat-header-cell *matHeaderCellDef>Field</th>
+          <td mat-cell *matCellDef="let element">{{ element.label }}</td>
+        </ng-container>
+
+        <!-- Value Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>Value</th>
+          <td mat-cell *matCellDef="let element">{{ element.value }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['label', 'value']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['label', 'value']"></tr>
+      </table>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<div class="stepper-actions">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="stepper.previous()"
+    [disabled]="stepper.selectedIndex === 0"
+  >
+    Back
+  </button>
+
+  <button
+    mat-raised-button
+    color="accent"
+    *ngIf="!isLastStep"
+    (click)="stepper.next()"
+    [disabled]="isStepInvalid(stepper.selectedIndex)"
+  >
+    Next
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    *ngIf="stepper.selectedIndex === stepper.steps.length - 1"
+    (click)="finish()"
+  >
+    Finish
+  </button>
+</div>
