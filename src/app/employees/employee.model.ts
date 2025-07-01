@@ -1,5 +1,5 @@
 export interface Employee {
-  id: string;
+  id: number;
   user_uuid: string;
   employee_code: string;
   designation: string;

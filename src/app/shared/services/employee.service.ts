@@ -8,7 +8,7 @@ export class EmployeeService {
   private table = 'employees';
 
   async getEmployees() {
-    const data = await this.supabaseService.getAll(this.table);
+    const data = await this.supabaseService.getAll<Employee>(this.table);
     return data;
   }
 
@@ -47,7 +47,7 @@ export class EmployeeService {
 
   async getAllByParams(employee: Employee) {
     if (employee) {
-      const data = await this.supabaseService.getAllByParams(
+      const data = await this.supabaseService.getAllByParams<Employee>(
         this.table,
         employee
       );

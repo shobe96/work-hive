@@ -58,7 +58,7 @@ export class EmployeesComponent implements OnInit {
     this.filteredEmployees = [...this.employees];
   }
 
-  async deleteEmployee(id: string) {
+  async deleteEmployee(id: number) {
     const confirmed = confirm('Are you sure you want to delete this employee?');
     if (!confirmed) return;
 
@@ -90,12 +90,7 @@ export class EmployeesComponent implements OnInit {
       );
 
       if (result) {
-        // Update local employee list
-        const index = this.employees.findIndex((x) => x.id === result[0].id);
-        console.log('index: ', index);
-        console.log('result: ', result[0]);
-        this.employees[index] = result[0];
-        console.log(this.employees[index]);
+        //call retrieve again
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -123,7 +118,7 @@ export class EmployeesComponent implements OnInit {
         'employees',
         newEmployee
       );
-      if (createdEmployees && createdEmployees.length > 0) {
+      if (createdEmployees) {
         this.employees.push(newEmployee as Employee);
       }
     } catch (err: unknown) {
