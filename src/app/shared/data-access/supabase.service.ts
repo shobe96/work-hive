@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase.client';
+import { Join } from './join.model';
 
 @Injectable({
   providedIn: 'root',
@@ -130,5 +131,25 @@ export class SupabaseService {
     } else {
       return data || [];
     }
+  }
+
+  async getWithJoins<T>(table: string, joins: Join[]) {
+    const joinSelects = joins.map(
+      (join) => `${join.joinTableName}:${join.forignKeyName}(*)`
+    );
+
+    const selectClause = ['*', ...joinSelects].join(', ');
+    let query = this.supabase
+      .schema(this.schemaName)
+      .from(table)
+      .select(selectClause);
+
+    joins.forEach((j) => {
+      query = query.eq(j.whereKeyName, j.whereValue);
+    });
+
+    const result = await query.single<T>();
+
+    return result.data;
   }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
+import { AuthFacadeService } from '../data-access/auth.facade.service';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
   koristi inject metodu za inject-ovanje dependency-ja umesto konstruktora
  */
   private authService = inject(AuthService);
+  private authFacadeService = inject(AuthFacadeService);
   private router = inject(Router);
 
   constructor() {
@@ -37,22 +39,7 @@ export class LoginComponent {
  */
   async login() {
     // ✅ Call the signUp method from AuthService
-    const result = await this.authService.signIn(
-      this.email,
-      this.password
-      // this.fullName,
-      // this.phone
-    );
-
-    console.log('User is: ', result);
-
-    if (result.error) {
-      this.errorMessage = result.error.message || 'Signup failed';
-    } else {
-      this.errorMessage = '';
-      // Optionally log the user in after signup
-      this.router.navigate(['/employees']);
-    }
+    this.authFacadeService.login(this.email, this.password);
 
     // else {
     //   // Login flow
