@@ -1,0 +1,19 @@
+<div class="container">
+  <header>
+    <h1>Employee Directory</h1>
+    <button (click)="logout()">Logout</button>
+  </header>
+
+  <section *ngIf="loading">Loading...</section>
+  <section *ngIf="error">{{ error }}</section>
+
+  <section class="employee-list" *ngIf="!loading && !error">
+    <div class="employee-card" *ngFor="let employee of employees">
+      <h3>{{ employee.employee_code }}</h3>
+      <p>{{ employee.date_of_joining }}</p>
+      <p>{{ employee.designation }}</p>
+      <p>{{ employee.employment_type }}</p>
+      <p>{{ employee.salary }}</p>
+    </div>
+  </section>
+</div>

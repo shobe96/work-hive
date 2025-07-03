@@ -1,0 +1,114 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes items to edges */
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .add-btn {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+header h1 {
+  font-size: 1.75rem;
+  color: #333;
+}
+
+header button {
+  padding: 0.5rem 1rem;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+header button:hover {
+  background-color: #303f9f;
+}
+
+.employee-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.employee-card {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+
+  .card-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+.employee-card h3 {
+  margin-top: 0;
+  color: #222;
+}
+
+.employee-card p {
+  margin: 0.25rem 0;
+  color: #555;
+}
+
+.search-bar {
+  margin-bottom: 1.5rem;
+  margin-left: -10px;
+  padding: 0 0.75rem; // match card spacing (gap between columns)
+
+  input {
+    width: 98%;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #666; // ✅ Dark grey border
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+
+    &:focus {
+      outline: none;
+      border-color: #3f51b5;
+      box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
+    }
+  }
+}
