@@ -8,6 +8,11 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { BasicInfoStepComponent } from './basic-info-step/basic-info-step.component';
+import { AddressStepComponent } from './address-step/address-step.component';
+import { PersonalDataStepComponent } from './personal-data-step/personal-data-step.component';
+import { TechStackStepComponent } from './tech-stack-step/tech-stack-step.component';
+import { SummaryStepComponent } from './summary-step/summary-step.component';
 
 interface MyStepperSelectionEvent {
   selectedIndex: number;
@@ -27,25 +32,17 @@ interface MyStepperSelectionEvent {
     MatRadioModule,
     ReactiveFormsModule,
     MatTableModule,
+    BasicInfoStepComponent,
+    AddressStepComponent,
+    PersonalDataStepComponent,
+    TechStackStepComponent,
+    SummaryStepComponent,
   ],
   templateUrl: './onboarding.component.html',
   styleUrl: './onboarding.component.scss',
 })
 export class OnboardingComponent {
   form: FormGroup;
-
-  tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-  bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-
-  languageFrameworks: { [key: string]: string[] } = {
-    JavaScript: ['Angular', 'React', 'Vue'],
-    TypeScript: ['Angular', 'React'],
-    Java: ['Spring', 'Struts'],
-    Python: ['Django', 'Flask'],
-    'Node.js': ['Express'],
-  };
-
-  backendLanguages = ['Node.js', 'Python', 'Java'];
 
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -101,29 +98,6 @@ export class OnboardingComponent {
       default:
         return false;
     }
-  }
-
-  onRoleChange(role: string) {
-    const step4 = this.step4Form;
-    const frontend = step4.get('frontend');
-    const backend = step4.get('backend');
-
-    if (role === 'Frontend') {
-      backend?.reset();
-      backend?.disable();
-      frontend?.enable();
-    } else if (role === 'Backend') {
-      frontend?.reset();
-      frontend?.disable();
-      backend?.enable();
-    } else {
-      frontend?.enable();
-      backend?.enable();
-    }
-  }
-
-  getFrameworksFor(lang: string): string[] {
-    return this.languageFrameworks[lang] || [];
   }
 
   onStepChange(event: MyStepperSelectionEvent) {

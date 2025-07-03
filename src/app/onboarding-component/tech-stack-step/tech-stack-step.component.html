@@ -1,0 +1,69 @@
+<div [formGroup]="form">
+  <mat-label>Role <span class="required">*</span></mat-label>
+  <mat-radio-group formControlName="role" (change)="onRoleChange($event.value)">
+    <mat-radio-button value="Frontend">Frontend</mat-radio-button>
+    <mat-radio-button value="Backend">Backend</mat-radio-button>
+    <mat-radio-button value="Fullstack">Fullstack</mat-radio-button>
+  </mat-radio-group>
+  <mat-error *ngIf="form.get('role')?.hasError('required')">
+    Required
+  </mat-error>
+
+  <!-- Frontend -->
+  <div
+    *ngIf="['Frontend', 'Fullstack'].includes(form.get('role')?.value)"
+    [formGroupName]="'frontend'"
+  >
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Frontend Languages</mat-label>
+      <mat-select formControlName="languages" multiple>
+        <mat-option
+          *ngFor="let lang of ['JavaScript', 'TypeScript']"
+          [value]="lang"
+        >
+          {{ lang }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Frontend Frameworks</mat-label>
+      <mat-select formControlName="frameworks" multiple>
+        <ng-container
+          *ngFor="let lang of form.get('frontend.languages')?.value"
+        >
+          <mat-option *ngFor="let fw of getFrameworksFor(lang)" [value]="fw">
+            {{ fw }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Backend -->
+  <!-- Backend -->
+  <div
+    *ngIf="['Backend', 'Fullstack'].includes(form.get('role')?.value)"
+    [formGroupName]="'backend'"
+  >
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Backend Languages</mat-label>
+      <mat-select formControlName="languages" multiple>
+        <mat-option *ngFor="let lang of backendLanguages" [value]="lang">
+          {{ lang }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Backend Frameworks</mat-label>
+      <mat-select formControlName="frameworks" multiple>
+        <ng-container *ngFor="let lang of form.get('backend.languages')?.value">
+          <mat-option *ngFor="let fw of getFrameworksFor(lang)" [value]="fw">
+            {{ fw }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

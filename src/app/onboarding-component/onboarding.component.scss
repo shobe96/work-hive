@@ -63,3 +63,41 @@ th {
 tr:nth-child(even) {
   background-color: #f1f1f1;
 }
+
+/* Applies to fields within each step component */
+app-basic-info-step,
+app-address-step,
+app-personal-data-step,
+app-tech-stack-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* space between form fields */
+}
+
+/* Ensure form wrappers inside steps don't add inconsistent margins */
+mat-step form {
+  margin: 0;
+  padding: 0;
+}
+
+/* Control consistent spacing around emphasized sections */
+.emphasized-section {
+  border: 2px solid #3f51b5;
+  background-color: #e8eaf6;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 16px auto;
+  max-width: 800px;
+}
+
+/* Optional: prevent full-width stretching if unwanted */
+mat-horizontal-stepper {
+  padding: 0 24px;
+}
+
+/* Improve overall layout */
+mat-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
