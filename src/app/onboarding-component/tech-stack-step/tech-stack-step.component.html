@@ -1,12 +1,12 @@
 <div [formGroup]="form">
-  <mat-label>Role <span class="required">*</span></mat-label>
+  <mat-label>Role</mat-label>
   <mat-radio-group formControlName="role" (change)="onRoleChange($event.value)">
     <mat-radio-button value="Frontend">Frontend</mat-radio-button>
     <mat-radio-button value="Backend">Backend</mat-radio-button>
     <mat-radio-button value="Fullstack">Fullstack</mat-radio-button>
   </mat-radio-group>
   <mat-error *ngIf="form.get('role')?.hasError('required')">
-    Required
+    *role is required
   </mat-error>
 
   <!-- Frontend -->
@@ -24,6 +24,11 @@
           {{ lang }}
         </mat-option>
       </mat-select>
+      <mat-error
+        *ngIf="form.get('frontend.languages')?.hasError('nonEmptyArray')"
+      >
+        *at least one language must be selected
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
@@ -37,6 +42,11 @@
           </mat-option>
         </ng-container>
       </mat-select>
+      <mat-error
+        *ngIf="form.get('frontend.frameworks')?.hasError('nonEmptyArray')"
+      >
+        *at least one framework must be selected
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -53,6 +63,11 @@
           {{ lang }}
         </mat-option>
       </mat-select>
+      <mat-error
+        *ngIf="form.get('backend.languages')?.hasError('nonEmptyArray')"
+      >
+        *at least one language must be selected
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
@@ -64,6 +79,11 @@
           </mat-option>
         </ng-container>
       </mat-select>
+      <mat-error
+        *ngIf="form.get('backend.frameworks')?.hasError('nonEmptyArray')"
+      >
+        *at least one framework must be selected
+      </mat-error>
     </mat-form-field>
   </div>
 </div>

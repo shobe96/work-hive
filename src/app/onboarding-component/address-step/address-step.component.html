@@ -1,25 +1,25 @@
 <section [formGroup]="form">
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Address <span class="required">*</span></mat-label>
+    <mat-label>Address</mat-label>
     <input matInput placeholder="Address" formControlName="address" />
     <mat-error *ngIf="form.get('address')?.hasError('required')">
-      Required
+      *required
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>City <span class="required">*</span></mat-label>
+    <mat-label>City</mat-label>
     <input matInput placeholder="City" formControlName="city" />
     <mat-error *ngIf="form.get('city')?.hasError('required')">
-      Required
+      *required
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Country <span class="required">*</span></mat-label>
+    <mat-label>Country</mat-label>
     <input matInput placeholder="Country" formControlName="country" />
     <mat-error *ngIf="form.get('country')?.hasError('required')">
-      Required
+      *required
     </mat-error>
   </mat-form-field>
 </section>

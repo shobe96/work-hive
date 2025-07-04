@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   standalone: true,
@@ -16,8 +18,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class BasicInfoStepComponent {
   @Input() form!: FormGroup;
+
+  maxDate: Date = new Date(); // today
 }

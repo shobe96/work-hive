@@ -37,16 +37,18 @@ export class TechStackStepComponent {
   backendLanguages = ['Node.js', 'Python', 'Java'];
 
   onRoleChange(role: string) {
-    const step4 = this.form;
-    const frontend = step4.get('frontend');
-    const backend = step4.get('backend');
+    const frontend = this.form.get('frontend');
+    const backend = this.form.get('backend');
 
+    // Always reset both groups
+    frontend?.reset({ languages: [], frameworks: [] });
+    backend?.reset({ languages: [], frameworks: [] });
+
+    // Then apply enable/disable logic
     if (role === 'Frontend') {
-      backend?.reset();
       backend?.disable();
       frontend?.enable();
     } else if (role === 'Backend') {
-      frontend?.reset();
       frontend?.disable();
       backend?.enable();
     } else {

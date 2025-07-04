@@ -1,18 +1,19 @@
-import { Component, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
-import { BasicInfoStepComponent } from './basic-info-step/basic-info-step.component';
 import { AddressStepComponent } from './address-step/address-step.component';
+import { BasicInfoStepComponent } from './basic-info-step/basic-info-step.component';
 import { PersonalDataStepComponent } from './personal-data-step/personal-data-step.component';
-import { TechStackStepComponent } from './tech-stack-step/tech-stack-step.component';
 import { SummaryStepComponent } from './summary-step/summary-step.component';
+import { TechStackStepComponent } from './tech-stack-step/tech-stack-step.component';
+import { nonEmptyArrayValidator } from './validators';
 
 interface MyStepperSelectionEvent {
   selectedIndex: number;
@@ -48,11 +49,13 @@ export class OnboardingComponent {
 
   summaryData: { label: string; value: string }[] = [];
 
-  constructor(private fb: FormBuilder) {
+  private fb = inject(FormBuilder);
+
+  constructor() {
     this.form = this.fb.group({
       step1: this.fb.group({
-        name: ['', [Validators.required, Validators.minLength(3)]],
-        surname: ['', [Validators.required, Validators.minLength(3)]],
+        name: ['', [Validators.required]],
+        surname: ['', [Validators.required]],
         dob: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         phone: ['', [Validators.required, Validators.minLength(8)]],
@@ -74,12 +77,12 @@ export class OnboardingComponent {
       step4: this.fb.group({
         role: ['', Validators.required],
         frontend: this.fb.group({
-          languages: [{ value: [], disabled: true }],
-          frameworks: [{ value: [], disabled: true }],
+          languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
+          frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
         }),
         backend: this.fb.group({
-          languages: [{ value: [], disabled: true }],
-          frameworks: [{ value: [], disabled: true }],
+          languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
+          frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
         }),
       }),
     });
@@ -114,7 +117,14 @@ export class OnboardingComponent {
     this.summaryData = [
       { label: 'Name', value: value.step1.name },
       { label: 'Surname', value: value.step1.surname },
-      { label: 'Date of Birth', value: value.step1.dob },
+      {
+        label: 'Date of Birth',
+        value: new Date(value.step1.dob).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        }),
+      },
       { label: 'Email', value: value.step1.email },
       { label: 'Phone', value: value.step1.phone },
       { label: 'Emergency Phone', value: value.step1.emergencyPhone },

@@ -1,13 +1,13 @@
 <div [formGroup]="form">
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>T-shirt Size <span class="required">*</span></mat-label>
+    <mat-label>T-shirt Size</mat-label>
     <mat-select formControlName="tshirt">
       <mat-option *ngFor="let size of tshirtSizes" [value]="size">{{
         size
       }}</mat-option>
     </mat-select>
     <mat-error *ngIf="form.get('tshirt')?.hasError('required')"
-      >Required</mat-error
+      >*required</mat-error
     >
   </mat-form-field>
 
@@ -17,14 +17,14 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Blood Type <span class="required">*</span></mat-label>
+    <mat-label>Blood Type</mat-label>
     <mat-select formControlName="bloodType">
       <mat-option *ngFor="let blood of bloodTypes" [value]="blood">{{
         blood
       }}</mat-option>
     </mat-select>
     <mat-error *ngIf="form.get('bloodType')?.hasError('required')"
-      >Required</mat-error
+      >*required</mat-error
     >
   </mat-form-field>
 
@@ -37,7 +37,7 @@
     <mat-label>LinkedIn</mat-label>
     <input matInput placeholder="LinkedIn URL" formControlName="linkedin" />
     <mat-error *ngIf="form.get('linkedin')?.hasError('pattern')"
-      >Invalid URL</mat-error
+      >*invalid URL</mat-error
     >
   </mat-form-field>
 
@@ -45,7 +45,7 @@
     <mat-label>GitHub</mat-label>
     <input matInput placeholder="GitHub URL" formControlName="github" />
     <mat-error *ngIf="form.get('github')?.hasError('pattern')"
-      >Invalid URL</mat-error
+      >*invalid URL</mat-error
     >
   </mat-form-field>
 </div>
