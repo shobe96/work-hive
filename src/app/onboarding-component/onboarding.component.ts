@@ -14,6 +14,7 @@ import { PersonalDataStepComponent } from './personal-data-step/personal-data-st
 import { SummaryStepComponent } from './summary-step/summary-step.component';
 import { TechStackStepComponent } from './tech-stack-step/tech-stack-step.component';
 import { nonEmptyArrayValidator } from './validators';
+import { OnboardingSteps } from './step-labels.enum';
 
 interface MyStepperSelectionEvent {
   selectedIndex: number;
@@ -44,6 +45,7 @@ interface MyStepperSelectionEvent {
 })
 export class OnboardingComponent {
   form: FormGroup;
+  public OnboardingSteps = OnboardingSteps;
 
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -52,38 +54,58 @@ export class OnboardingComponent {
   private fb = inject(FormBuilder);
 
   constructor() {
-    this.form = this.fb.group({
-      step1: this.fb.group({
-        name: ['', [Validators.required]],
-        surname: ['', [Validators.required]],
-        dob: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        phone: ['', [Validators.required, Validators.minLength(8)]],
-        emergencyPhone: ['', [Validators.required, Validators.minLength(8)]],
+    this.form = this.buildForm();
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      step1: this.buildStep1Form(),
+      step2: this.buildStep2Form(),
+      step3: this.buildStep3Form(),
+      step4: this.buildStep4Form(),
+    });
+  }
+
+  private buildStep1Form(): FormGroup {
+    return this.fb.group({
+      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      dob: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.minLength(8)]],
+      emergencyPhone: ['', [Validators.required, Validators.minLength(8)]],
+    });
+  }
+
+  private buildStep2Form(): FormGroup {
+    return this.fb.group({
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+    });
+  }
+
+  private buildStep3Form(): FormGroup {
+    return this.fb.group({
+      tshirt: ['', Validators.required],
+      allergies: [''],
+      bloodType: ['', Validators.required],
+      hobbies: [''],
+      linkedin: ['', Validators.pattern(/https?:\/\/.*/)],
+      github: ['', Validators.pattern(/https?:\/\/.*/)],
+    });
+  }
+
+  private buildStep4Form(): FormGroup {
+    return this.fb.group({
+      role: ['', Validators.required],
+      frontend: this.fb.group({
+        languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
+        frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
       }),
-      step2: this.fb.group({
-        address: ['', Validators.required],
-        city: ['', Validators.required],
-        country: ['', Validators.required],
-      }),
-      step3: this.fb.group({
-        tshirt: ['', Validators.required],
-        allergies: [''],
-        bloodType: ['', Validators.required],
-        hobbies: [''],
-        linkedin: ['', Validators.pattern(/https?:\/\/.*/)],
-        github: ['', Validators.pattern(/https?:\/\/.*/)],
-      }),
-      step4: this.fb.group({
-        role: ['', Validators.required],
-        frontend: this.fb.group({
-          languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
-          frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
-        }),
-        backend: this.fb.group({
-          languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
-          frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
-        }),
+      backend: this.fb.group({
+        languages: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
+        frameworks: [{ value: [], disabled: true }, [nonEmptyArrayValidator]],
       }),
     });
   }

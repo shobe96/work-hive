@@ -6,7 +6,7 @@
   <!-- Step 1: Basic Info -->
   <mat-step [stepControl]="step1Form">
     <form [formGroup]="step1Form">
-      <ng-template matStepLabel>Basic Info</ng-template>
+      <ng-template matStepLabel>{{ OnboardingSteps.BasicInfo }}</ng-template>
 
       <section class="emphasized-section">
         <!-- Basic Info Form Here -->
@@ -18,7 +18,7 @@
   <!-- Step 2: Address -->
   <mat-step [stepControl]="step2Form">
     <form [formGroup]="step2Form">
-      <ng-template matStepLabel>Address</ng-template>
+      <ng-template matStepLabel>{{ OnboardingSteps.Address }}</ng-template>
 
       <section class="emphasized-section">
         <!-- Address Info Form Here -->
@@ -30,7 +30,7 @@
   <!-- Step 3: Personal Info -->
   <mat-step [stepControl]="step3Form">
     <form [formGroup]="step3Form">
-      <ng-template matStepLabel>Personal Data</ng-template>
+      <ng-template matStepLabel>{{ OnboardingSteps.PersonalData }}</ng-template>
 
       <section class="emphasized-section">
         <!-- Address Info Form Here -->
@@ -42,7 +42,7 @@
   <!-- Step 4: Tech Stack -->
   <mat-step [stepControl]="step4Form">
     <form [formGroup]="step4Form">
-      <ng-template matStepLabel>Tech Stack</ng-template>
+      <ng-template matStepLabel>{{ OnboardingSteps.TechStack }}</ng-template>
 
       <section class="emphasized-section">
         <app-tech-stack-step [form]="step4Form"></app-tech-stack-step>
@@ -52,7 +52,7 @@
 
   <!-- Step 5: Summary -->
   <mat-step>
-    <ng-template matStepLabel>Summary</ng-template>
+    <ng-template matStepLabel>{{ OnboardingSteps.Summary }}</ng-template>
     <div class="app-summary-step">
       <app-summary-step [summaryData]="summaryData"></app-summary-step>
     </div>

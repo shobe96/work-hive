@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+import { FormUtilsService } from '../form-utils.service';
 
 @Component({
   selector: 'app-tech-stack-step',
@@ -26,6 +27,8 @@ import { MatRadioModule } from '@angular/material/radio';
 export class TechStackStepComponent {
   @Input() form!: FormGroup;
 
+  private formUtils = inject(FormUtilsService);
+
   languageFrameworks: { [key: string]: string[] } = {
     JavaScript: ['Angular', 'React', 'Vue'],
     TypeScript: ['Angular', 'React'],
@@ -37,23 +40,27 @@ export class TechStackStepComponent {
   backendLanguages = ['Node.js', 'Python', 'Java'];
 
   onRoleChange(role: string) {
-    const frontend = this.form.get('frontend');
-    const backend = this.form.get('backend');
+    const frontend = this.form.get('frontend') as FormGroup;
+    const backend = this.form.get('backend') as FormGroup;
 
-    // Always reset both groups
-    frontend?.reset({ languages: [], frameworks: [] });
-    backend?.reset({ languages: [], frameworks: [] });
+    this.formUtils.updateControls(frontend, 'reset', {
+      languages: [],
+      frameworks: [],
+    });
+    this.formUtils.updateControls(backend, 'reset', {
+      languages: [],
+      frameworks: [],
+    });
 
-    // Then apply enable/disable logic
     if (role === 'Frontend') {
-      backend?.disable();
-      frontend?.enable();
+      this.formUtils.updateControls(backend, 'disable');
+      this.formUtils.updateControls(frontend, 'enable');
     } else if (role === 'Backend') {
-      frontend?.disable();
-      backend?.enable();
+      this.formUtils.updateControls(frontend, 'disable');
+      this.formUtils.updateControls(backend, 'enable');
     } else {
-      frontend?.enable();
-      backend?.enable();
+      this.formUtils.updateControls(frontend, 'enable');
+      this.formUtils.updateControls(backend, 'enable');
     }
   }
 

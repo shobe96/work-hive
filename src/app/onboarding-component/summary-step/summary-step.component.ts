@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-import { SummaryData } from '../summary-data';
 
 @Component({
   selector: 'app-summary-step',
