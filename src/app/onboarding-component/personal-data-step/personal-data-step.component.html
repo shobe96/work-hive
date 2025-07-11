@@ -6,9 +6,7 @@
         size
       }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="form.get('tshirt')?.hasError('required')"
-      >*required</mat-error
-    >
+    <mat-error *ngIf="getError('tshirt')">{{ getError('tshirt') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -23,9 +21,9 @@
         blood
       }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="form.get('bloodType')?.hasError('required')"
-      >*required</mat-error
-    >
+    <mat-error *ngIf="getError('bloodType')">{{
+      getError('bloodType')
+    }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -36,16 +34,14 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>LinkedIn</mat-label>
     <input matInput placeholder="LinkedIn URL" formControlName="linkedin" />
-    <mat-error *ngIf="form.get('linkedin')?.hasError('pattern')"
-      >*invalid URL</mat-error
-    >
+    <mat-error *ngIf="getError('linkedin')">{{
+      getError('linkedin')
+    }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>GitHub</mat-label>
     <input matInput placeholder="GitHub URL" formControlName="github" />
-    <mat-error *ngIf="form.get('github')?.hasError('pattern')"
-      >*invalid URL</mat-error
-    >
+    <mat-error *ngIf="getError('github')">{{ getError('github') }}</mat-error>
   </mat-form-field>
 </div>

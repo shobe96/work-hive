@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ERROR_MESSAGES } from '../form-error-messages';
 
 @Component({
   selector: 'app-personal-data-step',
@@ -24,4 +25,21 @@ export class PersonalDataStepComponent {
 
   tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+
+  getError(controlName: string): string | null {
+    const control = this.form.get(controlName);
+    if (!control || !(control.touched || control.dirty) || !control.errors)
+      return null;
+
+    const controlErrors = control.errors;
+    const messages = ERROR_MESSAGES[controlName];
+
+    for (const errorKey in controlErrors) {
+      if (messages && messages[errorKey]) {
+        return messages[errorKey];
+      }
+    }
+
+    return null;
+  }
 }

@@ -1,25 +1,14 @@
-<!-- basic-info-step.component.html -->
 <section [formGroup]="form">
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Name</mat-label>
     <input matInput placeholder="Name" formControlName="name" />
-    <mat-error *ngIf="form.get('name')?.hasError('required')">
-      *required
-    </mat-error>
-    <!-- <mat-error *ngIf="form.get('name')?.hasError('minlength')">
-      Minimum 1 character
-    </mat-error> -->
+    <mat-error *ngIf="getError('name')">{{ getError('name') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Surname</mat-label>
     <input matInput placeholder="Surname" formControlName="surname" />
-    <mat-error *ngIf="form.get('surname')?.hasError('required')">
-      *required
-    </mat-error>
-    <!-- <mat-error *ngIf="form.get('surname')?.hasError('minlength')">
-      Minimum 1 character
-    </mat-error> -->
+    <mat-error *ngIf="getError('surname')">{{ getError('surname') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -33,31 +22,19 @@
     />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="form.get('dob')?.hasError('required')">
-      *required
-    </mat-error>
+    <mat-error *ngIf="getError('dob')">{{ getError('dob') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Email</mat-label>
     <input matInput type="email" placeholder="Email" formControlName="email" />
-    <mat-error *ngIf="form.get('email')?.hasError('required')">
-      *required
-    </mat-error>
-    <mat-error *ngIf="form.get('email')?.hasError('email')">
-      Invalid email format
-    </mat-error>
+    <mat-error *ngIf="getError('email')">{{ getError('email') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Phone</mat-label>
     <input matInput placeholder="Phone" formControlName="phone" />
-    <mat-error *ngIf="form.get('phone')?.hasError('required')">
-      *required
-    </mat-error>
-    <mat-error *ngIf="form.get('phone')?.hasError('minlength')">
-      Minimum 8 characters
-    </mat-error>
+    <mat-error *ngIf="getError('phone')">{{ getError('phone') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -67,11 +44,8 @@
       placeholder="Emergency Phone"
       formControlName="emergencyPhone"
     />
-    <mat-error *ngIf="form.get('emergencyPhone')?.hasError('required')">
-      *required
-    </mat-error>
-    <mat-error *ngIf="form.get('emergencyPhone')?.hasError('minlength')">
-      Minimum 8 characters
-    </mat-error>
+    <mat-error *ngIf="getError('emergencyPhone')">{{
+      getError('emergencyPhone')
+    }}</mat-error>
   </mat-form-field>
 </section>

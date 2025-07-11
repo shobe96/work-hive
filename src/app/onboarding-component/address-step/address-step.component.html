@@ -2,24 +2,30 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Address</mat-label>
     <input matInput placeholder="Address" formControlName="address" />
-    <mat-error *ngIf="form.get('address')?.hasError('required')">
-      *required
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>City</mat-label>
-    <input matInput placeholder="City" formControlName="city" />
-    <mat-error *ngIf="form.get('city')?.hasError('required')">
-      *required
-    </mat-error>
+    <mat-error *ngIf="getError('address')">{{ getError('address') }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Country</mat-label>
-    <input matInput placeholder="Country" formControlName="country" />
-    <mat-error *ngIf="form.get('country')?.hasError('required')">
-      *required
-    </mat-error>
+    <mat-select formControlName="country" placeholder="Select country">
+      <mat-option *ngFor="let country of countries" [value]="country.code">
+        {{ country.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="getError('country')">{{ getError('country') }}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>City</mat-label>
+    <mat-select
+      formControlName="city"
+      placeholder="Select city"
+      [disabled]="filteredCities.length === 0"
+    >
+      <mat-option *ngFor="let city of filteredCities" [value]="city.name">
+        {{ city.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="getError('city')">{{ getError('city') }}</mat-error>
   </mat-form-field>
 </section>

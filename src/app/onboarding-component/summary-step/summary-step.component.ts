@@ -26,8 +26,4 @@ import { MatStepperModule } from '@angular/material/stepper';
 })
 export class SummaryStepComponent {
   @Input() summaryData!: { label: string; value: string }[];
-
-  constructor() {
-    console.log('SummaryStepComponent initialized', this.summaryData);
-  }
 }
