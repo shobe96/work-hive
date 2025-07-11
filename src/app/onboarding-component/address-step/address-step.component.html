@@ -1,0 +1,40 @@
+<section [formGroup]="form">
+  <!-- Address -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Address</mat-label>
+    <input matInput placeholder="Address" formControlName="address" />
+    <mat-error *ngIf="getError('address')">{{ getError('address') }}</mat-error>
+  </mat-form-field>
+
+  <!-- Country -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Country</mat-label>
+    <mat-select formControlName="country" placeholder="Select country">
+      <mat-option
+        *ngFor="let country of countries; trackBy: trackById"
+        [value]="country.code"
+      >
+        {{ country.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="getError('country')">{{ getError('country') }}</mat-error>
+  </mat-form-field>
+
+  <!-- City -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>City</mat-label>
+    <mat-select
+      formControlName="city"
+      placeholder="Select city"
+      [disabled]="filteredCities.length === 0"
+    >
+      <mat-option
+        *ngFor="let city of filteredCities; trackBy: trackById"
+        [value]="city.name"
+      >
+        {{ city.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="getError('city')">{{ getError('city') }}</mat-error>
+  </mat-form-field>
+</section>
