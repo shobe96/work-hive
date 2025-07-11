@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { ERROR_MESSAGES } from './form-error-messages';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +66,36 @@ export class FormUtilsService {
    */
   private resetControl(control: AbstractControl, value: unknown = null): void {
     control.reset(value, this.options);
+  }
+
+  /**
+   * Returns a human-readable error message for a given control in a form group.
+   * Handles required, custom messages, and specific edge cases like city-country mismatch.
+   */
+  getError(form: FormGroup, controlName: string): string | null {
+    const control = form.get(controlName);
+    if (!control || !(control.touched || control.dirty) || !control.errors) {
+      // if (!control || !control.dirty || !control.errors) {
+      return null;
+    }
+
+    const controlErrors = control.errors;
+    const messages = ERROR_MESSAGES[controlName];
+
+    for (const errorKey in controlErrors) {
+      if (controlName === 'city' && errorKey === 'cityCountryMismatch') {
+        return 'Selected city does not belong to the selected country.';
+      }
+
+      if (messages && messages[errorKey]) {
+        return messages[errorKey];
+      }
+    }
+
+    if (controlErrors['required']) {
+      return '*required';
+    }
+
+    return null;
   }
 }

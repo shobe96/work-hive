@@ -59,6 +59,10 @@ export class OnboardingComponent {
     this.form = this.buildForm();
   }
 
+  private get stepForms(): FormGroup[] {
+    return [this.step1Form, this.step2Form, this.step3Form, this.step4Form];
+  }
+
   private buildForm(): FormGroup {
     return this.fb.group({
       step1: this.buildStep1Form(),
@@ -124,46 +128,26 @@ export class OnboardingComponent {
   }
 
   isStepInvalid(index: number): boolean {
-    const stepForms = [
-      this.step1Form,
-      this.step2Form,
-      this.step3Form,
-      this.step4Form,
-    ];
+    const stepForms = this.stepForms;
     const currentStep = stepForms[index];
     // Just check validity without marking touched
     return currentStep.invalid;
   }
 
-  markStepTouched(index: number) {
-    const stepForms = [
-      this.step1Form,
-      this.step2Form,
-      this.step3Form,
-      this.step4Form,
-    ];
-    stepForms[index].markAllAsTouched();
-  }
+  onStepChange(event: {
+    selectedIndex: number;
+    previouslySelectedIndex?: number;
+  }) {
+    const stepForms = this.stepForms;
 
-  goToNextStep() {
-    const currentIndex = this.stepper.selectedIndex;
-    if (this.isStepInvalid(currentIndex)) {
-      this.markStepTouched(currentIndex);
-      return; // prevent moving to next step if invalid
-    }
-    if (currentIndex < this.stepper.steps.length - 1) {
-      this.stepper.next();
-    }
-  }
+    const prevIndex = event.previouslySelectedIndex;
 
-  goToPreviousStep() {
-    const currentIndex = this.stepper.selectedIndex;
-    if (currentIndex > 0) {
-      this.stepper.previous();
+    if (typeof prevIndex === 'number') {
+      const previousForm = stepForms[prevIndex];
+      previousForm?.markAllAsTouched();
+      previousForm?.updateValueAndValidity();
     }
-  }
 
-  onStepChange(event: { selectedIndex: number }) {
     if (event.selectedIndex === this.stepper.steps.length - 1) {
       this.prepareSummary();
     }

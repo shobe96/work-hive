@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ERROR_MESSAGES } from '../form-error-messages';
+import { FormUtilsService } from '../form-utils.service';
 
 @Component({
   standalone: true,
@@ -26,27 +26,16 @@ import { ERROR_MESSAGES } from '../form-error-messages';
 export class BasicInfoStepComponent {
   @Input() form!: FormGroup;
 
+  // Injecting shared service for reusable form control logic
+  private formUtils = inject(FormUtilsService);
+
   maxDate: Date = new Date(); // today
 
   /**
-   * Checks if a specific form control has a given validation error.
-   * Used in the HTML template to show error messages.
-   * Returns the first relevant error message for a control, or null if none.
+   * Checks if a given form control path has a specific validation error.
+   * Used in the template to show error messages.
    */
   getError(controlName: string): string | null {
-    const control = this.form.get(controlName);
-    if (!control || !(control.touched || control.dirty) || !control.errors)
-      return null;
-
-    const controlErrors = control.errors;
-    const messages = ERROR_MESSAGES[controlName];
-
-    for (const errorKey in controlErrors) {
-      if (messages && messages[errorKey]) {
-        return messages[errorKey];
-      }
-    }
-
-    return null;
+    return this.formUtils.getError(this.form, controlName);
   }
 }

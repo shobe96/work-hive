@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ERROR_MESSAGES } from '../form-error-messages';
+import { FormUtilsService } from '../form-utils.service';
 
 @Component({
   selector: 'app-personal-data-step',
@@ -23,23 +23,17 @@ import { ERROR_MESSAGES } from '../form-error-messages';
 export class PersonalDataStepComponent {
   @Input() form!: FormGroup;
 
+  // Injecting shared service for reusable form control logic
+  private formUtils = inject(FormUtilsService);
+
   tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
+  /**
+   * Checks if a given form control path has a specific validation error.
+   * Used in the template to show error messages.
+   */
   getError(controlName: string): string | null {
-    const control = this.form.get(controlName);
-    if (!control || !(control.touched || control.dirty) || !control.errors)
-      return null;
-
-    const controlErrors = control.errors;
-    const messages = ERROR_MESSAGES[controlName];
-
-    for (const errorKey in controlErrors) {
-      if (messages && messages[errorKey]) {
-        return messages[errorKey];
-      }
-    }
-
-    return null;
+    return this.formUtils.getError(this.form, controlName);
   }
 }

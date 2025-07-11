@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { ERROR_MESSAGES } from '../form-error-messages';
 
 @Component({
   selector: 'app-tech-stack-step',
@@ -140,24 +139,7 @@ export class TechStackStepComponent {
    * Checks if a given form control path has a specific validation error.
    * Used in the template to show error messages.
    */
-  hasError(path: string, errorName: string): boolean {
-    return this.form.get(path)?.hasError(errorName) ?? false;
-  }
-
   getError(controlName: string): string | null {
-    const control = this.form.get(controlName);
-    if (!control || !(control.touched || control.dirty) || !control.errors)
-      return null;
-
-    const controlErrors = control.errors;
-    const messages = ERROR_MESSAGES[controlName];
-
-    for (const errorKey in controlErrors) {
-      if (messages && messages[errorKey]) {
-        return messages[errorKey];
-      }
-    }
-
-    return null;
+    return this.formUtils.getError(this.form, controlName);
   }
 }
