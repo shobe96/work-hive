@@ -74,8 +74,7 @@ export class FormUtilsService {
    */
   getError(form: FormGroup, controlName: string): string | null {
     const control = form.get(controlName);
-    if (!control || !(control.touched || control.dirty) || !control.errors) {
-      // if (!control || !control.dirty || !control.errors) {
+    if (!control || !control.dirty || !control.errors) {
       return null;
     }
 

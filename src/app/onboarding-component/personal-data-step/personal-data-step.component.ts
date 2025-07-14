@@ -36,4 +36,8 @@ export class PersonalDataStepComponent {
   getError(controlName: string): string | null {
     return this.formUtils.getError(this.form, controlName);
   }
+
+  trackByValue(index: number, value: string): string {
+    return value;
+  }
 }

@@ -2,9 +2,11 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>T-shirt Size</mat-label>
     <mat-select formControlName="tshirt">
-      <mat-option *ngFor="let size of tshirtSizes" [value]="size">{{
-        size
-      }}</mat-option>
+      <mat-option
+        *ngFor="let size of tshirtSizes; trackBy: trackByValue"
+        [value]="size"
+        >{{ size }}</mat-option
+      >
     </mat-select>
     <mat-error *ngIf="getError('tshirt')">{{ getError('tshirt') }}</mat-error>
   </mat-form-field>
@@ -17,9 +19,11 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Blood Type</mat-label>
     <mat-select formControlName="bloodType">
-      <mat-option *ngFor="let blood of bloodTypes" [value]="blood">{{
-        blood
-      }}</mat-option>
+      <mat-option
+        *ngFor="let blood of bloodTypes; trackBy: trackByValue"
+        [value]="blood"
+        >{{ blood }}</mat-option
+      >
     </mat-select>
     <mat-error *ngIf="getError('bloodType')">{{
       getError('bloodType')
