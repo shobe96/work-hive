@@ -1,77 +1,74 @@
 <div [formGroup]="form">
-  <mat-label>Role</mat-label>
+  <mat-label>Role <span class="required">*</span></mat-label>
   <mat-radio-group formControlName="role" (change)="onRoleChange($event.value)">
     <mat-radio-button value="Frontend">Frontend</mat-radio-button>
     <mat-radio-button value="Backend">Backend</mat-radio-button>
     <mat-radio-button value="Fullstack">Fullstack</mat-radio-button>
   </mat-radio-group>
-  <mat-error *ngIf="getError('role')">{{ getError('role') }}</mat-error>
 
-  <!-- Frontend -->
-  <div *ngIf="isFrontendSelected" [formGroupName]="'frontend'">
+  <!-- Role Error -->
+  <div class="role-error">
+    @if (getError('role')) {
+    <mat-error>{{ getError('role') }}</mat-error>
+    }
+  </div>
+
+  @if (hasSelectedRole()) {
+  <!-- Frontend Section -->
+  @if (isFrontendSelected()) {
+  <div [formGroupName]="'frontend'">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Frontend Languages</mat-label>
       <mat-select formControlName="languages" multiple>
-        <mat-option
-          *ngFor="let lang of frontendLanguages; trackBy: trackByValue"
-          [value]="lang"
-          >{{ lang }}</mat-option
-        >
+        @for (lang of frontendLanguages; track lang) {
+        <mat-option [value]="lang">{{ lang }}</mat-option>
+        }
       </mat-select>
-      <mat-error *ngIf="getError('frontend.languages')">{{
-        getError('frontend.languages')
-      }}</mat-error>
+      @if (getError('frontend.languages')) {
+      <mat-error>{{ getError('frontend.languages') }}</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Frontend Frameworks</mat-label>
       <mat-select formControlName="frameworks" multiple>
-        <mat-option
-          *ngFor="
-            let fw of getFrameworkOptions('frontend');
-            trackBy: trackByValue
-          "
-          [value]="fw"
-          >{{ fw }}</mat-option
-        >
+        @for (fw of frontendFrameworks(); track fw) {
+        <mat-option [value]="fw">{{ fw }}</mat-option>
+        }
       </mat-select>
-      <mat-error *ngIf="getError('frontend.frameworks')">{{
-        getError('frontend.frameworks')
-      }}</mat-error>
+      @if (getError('frontend.frameworks')) {
+      <mat-error>{{ getError('frontend.frameworks') }}</mat-error>
+      }
     </mat-form-field>
   </div>
+  }
 
-  <!-- Backend -->
-  <div *ngIf="isBackendSelected" [formGroupName]="'backend'">
+  <!-- Backend Section -->
+  @if (isBackendSelected()) {
+  <div [formGroupName]="'backend'">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Backend Languages</mat-label>
       <mat-select formControlName="languages" multiple>
-        <mat-option
-          *ngFor="let lang of backendLanguages; trackBy: trackByValue"
-          [value]="lang"
-          >{{ lang }}</mat-option
-        >
+        @for (lang of backendLanguages; track lang) {
+        <mat-option [value]="lang">{{ lang }}</mat-option>
+        }
       </mat-select>
-      <mat-error *ngIf="getError('backend.languages')">{{
-        getError('backend.languages')
-      }}</mat-error>
+      @if (getError('backend.languages')) {
+      <mat-error>{{ getError('backend.languages') }}</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Backend Frameworks</mat-label>
       <mat-select formControlName="frameworks" multiple>
-        <mat-option
-          *ngFor="
-            let fw of getFrameworkOptions('backend');
-            trackBy: trackByValue
-          "
-          [value]="fw"
-          >{{ fw }}</mat-option
-        >
+        @for (fw of backendFrameworks(); track fw) {
+        <mat-option [value]="fw">{{ fw }}</mat-option>
+        }
       </mat-select>
-      <mat-error *ngIf="getError('backend.frameworks')">{{
-        getError('backend.frameworks')
-      }}</mat-error>
+      @if (getError('backend.frameworks')) {
+      <mat-error>{{ getError('backend.frameworks') }}</mat-error>
+      }
     </mat-form-field>
   </div>
+  } }
 </div>

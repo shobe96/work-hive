@@ -1,28 +1,25 @@
+import { Component, ViewChild, computed, signal, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { OnboardingSteps } from './step-labels.enum';
+import { CITIES_BY_COUNTRY } from './address-step/citiesbycountry';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
-
 import { AddressStepComponent } from './address-step/address-step.component';
 import { BasicInfoStepComponent } from './basic-info-step/basic-info-step.component';
 import { PersonalDataStepComponent } from './personal-data-step/personal-data-step.component';
 import { SummaryStepComponent } from './summary-step/summary-step.component';
 import { TechStackStepComponent } from './tech-stack-step/tech-stack-step.component';
-import { OnboardingSteps } from './step-labels.enum';
-
-import {
-  phoneNumberValidator,
-  nonEmptyArrayValidator,
-  urlValidator,
-  cityCountryValidator,
-} from './validators';
-import { CITIES_BY_COUNTRY } from './address-step/citiesbycountry';
+import { FormUtilsService } from './form-utils.service';
 
 @Component({
   selector: 'app-onboarding-component',
@@ -46,23 +43,66 @@ import { CITIES_BY_COUNTRY } from './address-step/citiesbycountry';
   styleUrl: './onboarding.component.scss',
 })
 export class OnboardingComponent {
-  form: FormGroup;
+  // Enum of all onboarding steps
   public OnboardingSteps = OnboardingSteps;
 
+  // Reference to the Material stepper component in the template
   @ViewChild('stepper') stepper!: MatStepper;
 
-  summaryData: { label: string; value: string }[] = [];
-
+  // Dependency injection for FormBuilder and FormUtilsService
   private fb = inject(FormBuilder);
+  private formUtils = inject(FormUtilsService); // Inject FormUtilsService
 
-  constructor() {
-    this.form = this.buildForm();
+  // ==== Signals ====
+
+  // Stores the summary data to display at the final ste
+  readonly summaryData = signal<{ label: string; value: string }[]>([]);
+
+  // Tracks the currently selected step index
+  readonly selectedIndex = signal(0);
+
+  // Builds the complete onboarding form (containing 4 steps)
+  readonly form = this.buildForm();
+
+  // Step Forms (computed from main form)
+  readonly stepForms = computed((): FormGroup[] => [
+    this.step1Form,
+    this.step2Form,
+    this.step3Form,
+    this.step4Form,
+  ]);
+
+  // Computed value indicating whether the user is on the last step
+  readonly isLastStep = computed(() => {
+    const stepper = this.stepper;
+    return stepper ? this.selectedIndex() === stepper.steps.length - 1 : false;
+  });
+
+  // ==== Form Getters ====
+
+  // Getter for Step 1 form (Basic Info)
+  get step1Form(): FormGroup {
+    return this.form.get('step1') as FormGroup;
   }
 
-  private get stepForms(): FormGroup[] {
-    return [this.step1Form, this.step2Form, this.step3Form, this.step4Form];
+  // Getter for Step 2 form (Address Info)
+  get step2Form(): FormGroup {
+    return this.form.get('step2') as FormGroup;
   }
 
+  // Getter for Step 3 form (Personal Info)
+  get step3Form(): FormGroup {
+    return this.form.get('step3') as FormGroup;
+  }
+
+  // Getter for Step 4 form (Tech Stack)
+  get step4Form(): FormGroup {
+    return this.form.get('step4') as FormGroup;
+  }
+
+  // ==== Form Builders ====
+
+  // Builds the full form group with nested step forms
   private buildForm(): FormGroup {
     return this.fb.group({
       step1: this.buildStep1Form(),
@@ -72,93 +112,114 @@ export class OnboardingComponent {
     });
   }
 
+  /**
+   * Builds the form for Step 1 (Basic Info).
+   * Validators are set inside BasicInfoStepComponent via FormUtilsService.
+   */
   private buildStep1Form(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
-      dob: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [
-        '',
-        [Validators.required, Validators.minLength(8), phoneNumberValidator()],
-      ],
-      emergencyPhone: [
-        '',
-        [Validators.required, Validators.minLength(8), phoneNumberValidator()],
-      ],
+      name: [''],
+      surname: [''],
+      dob: [''],
+      email: [''],
+      phone: [''],
+      emergencyPhone: [''],
     });
   }
 
+  /**
+   * Builds the form for Step 2 (Address Data).
+   * Validators are set inside AddressStepComponent via FormUtilsService.
+   */
   private buildStep2Form(): FormGroup {
-    return this.fb.group(
-      {
-        address: ['', Validators.required],
-        city: ['', Validators.required],
-        country: ['', Validators.required],
-      },
-      {
-        validators: cityCountryValidator(CITIES_BY_COUNTRY),
-      }
-    );
+    const form = this.fb.group({
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+    });
+    this.formUtils.setAddressValidators(form, CITIES_BY_COUNTRY);
+    return form;
   }
 
+  /**
+   * Builds the form for Step 3 (Personal Data).
+   * Validators are set inside PersonalDataStepComponent via FormUtilsService.
+   */
   private buildStep3Form(): FormGroup {
     return this.fb.group({
-      tshirt: ['', Validators.required],
+      tshirt: [''], // No validators here
       allergies: [''],
-      bloodType: ['', Validators.required],
+      bloodType: [''],
       hobbies: [''],
-      linkedin: ['', urlValidator()],
-      github: ['', urlValidator()],
+      linkedin: [''],
+      github: [''],
     });
   }
 
+  /**
+   * Builds the form for Step 4 (Tech Stack Data).
+   * Validators are set inside TechStackStepComponent via FormUtilsService.
+   */
   private buildStep4Form(): FormGroup {
     return this.fb.group({
       role: ['', Validators.required],
       frontend: this.fb.group({
-        languages: [[], nonEmptyArrayValidator()],
-        frameworks: [[], nonEmptyArrayValidator()],
+        languages: [[]], // No validators here; FormUtilsService handles dynamically
+        frameworks: [[]],
       }),
       backend: this.fb.group({
-        languages: [[], nonEmptyArrayValidator()],
-        frameworks: [[], nonEmptyArrayValidator()],
+        languages: [[]],
+        frameworks: [[]],
       }),
     });
   }
 
-  isStepInvalid(index: number): boolean {
-    const stepForms = this.stepForms;
-    const currentStep = stepForms[index];
-    // Just check validity without marking touched
-    return currentStep.invalid;
-  }
+  // ==== Step Handling ====
 
+  /**
+   * Handles step change events from the stepper component.
+   * Marks previous form dirty if it's invalid and prepares summary on last step.
+   */
   onStepChange(event: {
     selectedIndex: number;
     previouslySelectedIndex?: number;
   }) {
-    const stepForms = this.stepForms;
+    const prev = event.previouslySelectedIndex;
+    const next = event.selectedIndex;
+    this.selectedIndex.set(next);
 
-    const prevIndex = event.previouslySelectedIndex;
+    const prevForm = typeof prev === 'number' ? this.stepForms()[prev] : null;
 
-    if (typeof prevIndex === 'number') {
-      const previousForm = stepForms[prevIndex];
-      previousForm?.markAllAsTouched();
-      previousForm?.updateValueAndValidity();
+    // Only mark previous step dirty if it's invalid (i.e., user skipped validation)
+    if (prevForm && prevForm.invalid) {
+      this.formUtils.markAsTouchedAndDirty(prevForm);
     }
 
-    if (event.selectedIndex === this.stepper.steps.length - 1) {
+    // Don't mark the new step dirty — let Angular track it based on user input
+
+    // Prepare summary if user navigates to the last step
+    if (next === this.stepper.steps.length - 1) {
       this.prepareSummary();
     }
   }
 
+  /**
+   * Checks if a given step index corresponds to an invalid form.
+   */
+  isStepInvalid(index: number): boolean {
+    const form = this.stepForms()[index];
+    return !!form && form.invalid;
+  }
+
+  /**
+   * Collects all form values and prepares summary data for display in the final step.
+   */
   prepareSummary() {
     const value = this.form.value;
     const frontend = value.step4.frontend;
     const backend = value.step4.backend;
 
-    this.summaryData = [
+    this.summaryData.set([
       { label: 'Name', value: value.step1.name },
       { label: 'Surname', value: value.step1.surname },
       {
@@ -210,32 +271,13 @@ export class OnboardingComponent {
             ? (backend.frameworks || []).join(', ') || 'None'
             : 'N/A',
       },
-    ];
+    ]);
   }
 
-  get step1Form(): FormGroup {
-    return this.form.get('step1') as FormGroup;
-  }
-
-  get step2Form(): FormGroup {
-    return this.form.get('step2') as FormGroup;
-  }
-
-  get step3Form(): FormGroup {
-    return this.form.get('step3') as FormGroup;
-  }
-
-  get step4Form(): FormGroup {
-    return this.form.get('step4') as FormGroup;
-  }
-
-  get isLastStep(): boolean {
-    return (
-      this.stepper?.selectedIndex === (this.stepper?.steps?.length ?? 0) - 1
-    );
-  }
-
+  /**
+   * Final submission logic (to be implemented).
+   */
   finish() {
-    // Implement navigation or form submission logic here
+    // Final submission logic
   }
 }

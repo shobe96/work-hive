@@ -1,57 +1,63 @@
-// form-error-messages.ts
-
 export const ERROR_MESSAGES: Record<string, Record<string, string>> = {
   name: {
-    required: 'required',
+    required: '*name is required',
   },
   surname: {
-    required: 'required',
+    required: '*surname is required',
   },
   dob: {
-    required: 'required',
+    required: '*date of birth is required',
   },
   email: {
-    required: 'required',
-    email: 'invalid email format',
+    required: '*email is required',
+    email: '*invalid email format',
   },
   phone: {
-    required: 'required',
-    minlength: 'minimum 8 characters',
+    required: '*phone is required',
+    minlength: '*minimum 8 characters',
     invalidPhone:
-      'phone number must contain only digits and may start with a "+" for international format.',
+      '*phone number must contain only digits and may start with a "+" for international format.',
   },
   emergencyPhone: {
-    required: 'required',
-    minlength: 'minimum 8 characters',
+    required: '*emergency phone is required',
+    minlength: '*minimum 8 characters',
     invalidPhone:
-      'emergency phone must contain only digits and may start with a "+" for international format.',
+      '*emergency phone must contain only digits and may start with a "+" for international format.',
   },
-  address: { required: 'Address is required' },
-  city: { required: 'City is required' },
-  country: { required: 'Country is required' },
+  address: {
+    required: '*address is required',
+  },
+  city: {
+    required: '*city is required',
+  },
+  country: {
+    required: '*country is required',
+  },
   tshirt: {
-    required: 'required',
+    required: '*t-shirt size is required',
   },
   bloodType: {
-    required: 'required',
+    required: '*blood type is required',
   },
   linkedin: {
-    pattern: 'invalid linkedIn URL',
+    pattern: '*invalid linkedin url',
   },
   github: {
-    pattern: 'invalid gitHub URL',
+    pattern: '*invalid github url',
   },
-  role: { required: 'Role is required' },
+  role: {
+    required: '*role is required',
+  },
   'frontend.languages': {
-    nonEmptyArray: 'Select at least one frontend language',
+    nonEmptyArray: '*select at least one frontend language',
   },
   'frontend.frameworks': {
-    nonEmptyArray: 'Select at least one frontend framework',
+    nonEmptyArray: '*select at least one frontend framework',
   },
   'backend.languages': {
-    nonEmptyArray: 'Select at least one backend language',
+    nonEmptyArray: '*select at least one backend language',
   },
   'backend.frameworks': {
-    nonEmptyArray: 'Select at least one backend framework',
+    nonEmptyArray: '*select at least one backend framework',
   },
 };

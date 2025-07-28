@@ -25,5 +25,10 @@ import { MatStepperModule } from '@angular/material/stepper';
   styleUrl: './summary-step.component.scss',
 })
 export class SummaryStepComponent {
+  /**
+   * Input property containing the summary data to display.
+   * Each item includes a label (e.g., "Email") and its corresponding value (e.g., "user@example.com").
+   * Typically used to show a final review step before form submission.
+   */
   @Input() summaryData!: { label: string; value: string }[];
 }

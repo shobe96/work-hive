@@ -61,6 +61,14 @@ export function urlValidator(): ValidatorFn {
   };
 }
 
+/**
+ * Custom validator that checks if the selected city matches the selected country.
+ *
+ * This is used to ensure that the city is valid for the selected country.
+ *
+ * @param citiesByCountry - A mapping of country codes to their respective cities.
+ * @returns A ValidatorFn that checks the 'country' and 'city' controls in a FormGroup.
+ */
 export function cityCountryValidator(
   citiesByCountry: Record<string, { code: string; name: string }[]>
 ): ValidatorFn {
