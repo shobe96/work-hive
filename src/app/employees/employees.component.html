@@ -1,6 +1,9 @@
 <div class="container">
+  <!-- Page Header -->
   <header>
     <h1>Employee Directory</h1>
+
+    <!-- Header Actions: Add employee and logout -->
     <div class="header-actions">
       <button title="Add employee" (click)="addEmployee()" class="add-btn">
         ➕
@@ -9,30 +12,46 @@
     </div>
   </header>
 
-  <!-- 🔍 Search input -->
+  <!-- 🔍 Search Input Field -->
   <div class="search-bar">
     <input
       type="text"
       placeholder="Search by designation or code..."
-      [(ngModel)]="searchQuery"
-      (input)="filterEmployees()"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="setSearchQuery($event)"
     />
   </div>
 
-  <section *ngIf="loading">Loading...</section>
-  <section *ngIf="error">{{ error }}</section>
+  <!-- ⏳ Loading State -->
+  @if (loading()) {
+  <section>Loading...</section>
+  }
 
-  <section class="employee-list" *ngIf="!loading && !error">
-    <div class="employee-card" *ngFor="let employee of filteredEmployees">
+  <!-- ❌ Error State -->
+  @if (error()) {
+  <section>{{ error() }}</section>
+  }
+
+  <!-- ✅ Main Content: Employee List -->
+  @if (!loading() && !error()) {
+  <section class="employee-list">
+    <!-- Loop through filtered employees -->
+    @for (employee of filteredEmployees(); track employee.id) {
+    <div class="employee-card">
+      <!-- Action Buttons for each employee -->
       <div class="card-actions">
         <button (click)="editEmployee(employee)">✏️</button>
         <button (click)="deleteEmployee(employee.id)">🗑️</button>
       </div>
+
+      <!-- Employee Info -->
       <h3>{{ employee.employee_code }}</h3>
       <p>{{ employee.date_of_joining }}</p>
       <p>{{ employee.designation }}</p>
       <p>{{ employee.employment_type }}</p>
       <p>{{ employee.salary }}</p>
     </div>
+    }
   </section>
+  }
 </div>

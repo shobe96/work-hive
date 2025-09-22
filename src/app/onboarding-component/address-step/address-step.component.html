@@ -1,0 +1,47 @@
+<section [formGroup]="form">
+  <!-- Address -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Address</mat-label>
+    <input matInput placeholder="Address" formControlName="address" />
+
+    @if (getError('address')) {
+    <mat-error>{{ getError('address') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Country -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Country</mat-label>
+    <mat-select formControlName="country" placeholder="Select country">
+      @for (country of countries; track country.code) {
+      <mat-option [value]="country.code">
+        {{ country.name }}
+      </mat-option>
+      }
+    </mat-select>
+
+    @if (getError('country')) {
+    <mat-error>{{ getError('country') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- City -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>City</mat-label>
+    <mat-select
+      formControlName="city"
+      placeholder="Select city"
+      [disabled]="filteredCities().length === 0"
+    >
+      @for (city of filteredCities(); track city.name) {
+      <mat-option [value]="city.name">
+        {{ city.name }}
+      </mat-option>
+      }
+    </mat-select>
+
+    @if (getError('city')) {
+    <mat-error>{{ getError('city') }}</mat-error>
+    }
+  </mat-form-field>
+</section>

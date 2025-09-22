@@ -1,0 +1,67 @@
+<section [formGroup]="form">
+  <!-- Name -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Name" formControlName="name" />
+    @if (getError('name')) {
+    <mat-error>{{ getError('name') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Surname -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Surname</mat-label>
+    <input matInput placeholder="Surname" formControlName="surname" />
+    @if (getError('surname')) {
+    <mat-error>{{ getError('surname') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Date of Birth -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Date of Birth</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      placeholder="Choose a date"
+      formControlName="dob"
+      [max]="maxDate"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    @if (getError('dob')) {
+    <mat-error>{{ getError('dob') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Email -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" placeholder="Email" formControlName="email" />
+    @if (getError('email')) {
+    <mat-error>{{ getError('email') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Phone -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Phone</mat-label>
+    <input matInput placeholder="Phone" formControlName="phone" />
+    @if (getError('phone')) {
+    <mat-error>{{ getError('phone') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Emergency Phone -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Emergency Phone</mat-label>
+    <input
+      matInput
+      placeholder="Emergency Phone"
+      formControlName="emergencyPhone"
+    />
+    @if (getError('emergencyPhone')) {
+    <mat-error>{{ getError('emergencyPhone') }}</mat-error>
+    }
+  </mat-form-field>
+</section>

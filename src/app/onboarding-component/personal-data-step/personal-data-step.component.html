@@ -1,0 +1,57 @@
+<div [formGroup]="form">
+  <!-- T-shirt Size -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>T-shirt Size</mat-label>
+    <mat-select formControlName="tshirt">
+      @for (size of tshirtSizes(); track size) {
+      <mat-option [value]="size">{{ size }}</mat-option>
+      }
+    </mat-select>
+    @if (getError('tshirt')) {
+    <mat-error>{{ getError('tshirt') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Allergies -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Allergies</mat-label>
+    <input matInput placeholder="Allergies" formControlName="allergies" />
+  </mat-form-field>
+
+  <!-- Blood Type -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Blood Type</mat-label>
+    <mat-select formControlName="bloodType">
+      @for (blood of bloodTypes(); track blood) {
+      <mat-option [value]="blood">{{ blood }}</mat-option>
+      }
+    </mat-select>
+    @if (getError('bloodType')) {
+    <mat-error>{{ getError('bloodType') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Hobbies -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Hobbies</mat-label>
+    <input matInput placeholder="Hobbies" formControlName="hobbies" />
+  </mat-form-field>
+
+  <!-- LinkedIn -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>LinkedIn</mat-label>
+    <input matInput placeholder="LinkedIn URL" formControlName="linkedin" />
+    @if (getError('linkedin')) {
+    <mat-error>{{ getError('linkedin') }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- GitHub -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>GitHub</mat-label>
+    <input matInput placeholder="GitHub URL" formControlName="github" />
+    @if (getError('github')) {
+    <mat-error>{{ getError('github') }}</mat-error>
+    }
+  </mat-form-field>
+</div>

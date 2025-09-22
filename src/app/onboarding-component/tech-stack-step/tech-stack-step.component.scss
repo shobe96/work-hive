@@ -1,0 +1,22 @@
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+.role-error {
+  margin-top: 4px;
+}
+
+section[formGroup] {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Adjust spacing as needed */
+}
+
+.full-width {
+  width: 50%;
+}
+
+mat-radio-button .mat-radio-label-content {
+  padding-left: 4px; /* Default is 8px — reduce to bring it closer */
+}

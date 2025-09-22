@@ -1,0 +1,74 @@
+<div [formGroup]="form">
+  <mat-label>Role <span class="required">*</span></mat-label>
+  <mat-radio-group formControlName="role" (change)="onRoleChange($event.value)">
+    <mat-radio-button value="Frontend">Frontend</mat-radio-button>
+    <mat-radio-button value="Backend">Backend</mat-radio-button>
+    <mat-radio-button value="Fullstack">Fullstack</mat-radio-button>
+  </mat-radio-group>
+
+  <!-- Role Error -->
+  <div class="role-error">
+    @if (getError('role')) {
+    <mat-error>{{ getError('role') }}</mat-error>
+    }
+  </div>
+
+  @if (hasSelectedRole()) {
+  <!-- Frontend Section -->
+  @if (isFrontendSelected()) {
+  <div [formGroupName]="'frontend'">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Frontend Languages</mat-label>
+      <mat-select formControlName="languages" multiple>
+        @for (lang of frontendLanguages; track lang) {
+        <mat-option [value]="lang">{{ lang }}</mat-option>
+        }
+      </mat-select>
+      @if (getError('frontend.languages')) {
+      <mat-error>{{ getError('frontend.languages') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Frontend Frameworks</mat-label>
+      <mat-select formControlName="frameworks" multiple>
+        @for (fw of frontendFrameworks(); track fw) {
+        <mat-option [value]="fw">{{ fw }}</mat-option>
+        }
+      </mat-select>
+      @if (getError('frontend.frameworks')) {
+      <mat-error>{{ getError('frontend.frameworks') }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  }
+
+  <!-- Backend Section -->
+  @if (isBackendSelected()) {
+  <div [formGroupName]="'backend'">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Backend Languages</mat-label>
+      <mat-select formControlName="languages" multiple>
+        @for (lang of backendLanguages; track lang) {
+        <mat-option [value]="lang">{{ lang }}</mat-option>
+        }
+      </mat-select>
+      @if (getError('backend.languages')) {
+      <mat-error>{{ getError('backend.languages') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Backend Frameworks</mat-label>
+      <mat-select formControlName="frameworks" multiple>
+        @for (fw of backendFrameworks(); track fw) {
+        <mat-option [value]="fw">{{ fw }}</mat-option>
+        }
+      </mat-select>
+      @if (getError('backend.frameworks')) {
+      <mat-error>{{ getError('backend.frameworks') }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  } }
+</div>

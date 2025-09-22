@@ -1,0 +1,83 @@
+<mat-horizontal-stepper
+  [linear]="true"
+  #stepper
+  (selectionChange)="onStepChange($event)"
+>
+  <!-- Step 1: Basic Info -->
+  <mat-step>
+    <form [formGroup]="step1Form">
+      <ng-template matStepLabel>{{ OnboardingSteps.BasicInfo }}</ng-template>
+
+      <section class="emphasized-section">
+        <app-basic-info-step [form]="step1Form"></app-basic-info-step>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 2: Address -->
+  <mat-step>
+    <form [formGroup]="step2Form">
+      <ng-template matStepLabel>{{ OnboardingSteps.Address }}</ng-template>
+
+      <section class="emphasized-section">
+        <app-address-step [form]="step2Form"></app-address-step>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 3: Personal Info -->
+  <mat-step>
+    <form [formGroup]="step3Form">
+      <ng-template matStepLabel>{{ OnboardingSteps.PersonalData }}</ng-template>
+
+      <section class="emphasized-section">
+        <app-personal-data-step [form]="step3Form"></app-personal-data-step>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 4: Tech Stack -->
+  <mat-step>
+    <form [formGroup]="step4Form">
+      <ng-template matStepLabel>{{ OnboardingSteps.TechStack }}</ng-template>
+
+      <section class="emphasized-section">
+        <app-tech-stack-step [form]="step4Form"></app-tech-stack-step>
+      </section>
+    </form>
+  </mat-step>
+
+  <!-- Step 5: Summary -->
+  <mat-step>
+    <ng-template matStepLabel>{{ OnboardingSteps.Summary }}</ng-template>
+
+    <div class="app-summary-step">
+      <app-summary-step [summaryData]="summaryData()"></app-summary-step>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<!-- Stepper Actions -->
+<div class="stepper-actions">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="stepper.previous()"
+    [disabled]="stepper.selectedIndex === 0"
+  >
+    Back
+  </button>
+
+  @if (!isLastStep()) {
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="stepper.next()"
+    [disabled]="isStepInvalid(stepper.selectedIndex)"
+  >
+    Next
+  </button>
+  } @if (isLastStep()) {
+  <button mat-raised-button color="primary" (click)="finish()">Finish</button>
+  }
+</div>

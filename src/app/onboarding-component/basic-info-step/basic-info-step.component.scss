@@ -1,0 +1,14 @@
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+section[formGroup] {
+  display: flex;
+  flex-direction: column;
+  gap: 36px; /* Adjust spacing as needed */
+}
+
+.full-width {
+  width: 33%;
+}
